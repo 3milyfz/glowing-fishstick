@@ -1,0 +1,197 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// USER #######################################################################
+model User {
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String  @unique
+  username  String  @unique
+  password  String
+  phone     String? // Not required
+  isAdmin   Boolean @default(false)
+  avatar    Int     @default(0)
+
+  content   Content[]
+  votes     Voted[]
+  upvotes   Upvoted[]
+  downvotes Downvoted[]
+  reports   Reported[]
+  templates CodeTemplate[]
+}
+
+// CONTENT, VOTING AND REPORTING ###############################################
+// A post, comment or reply
+model Content {
+  id           Int      @id @default(autoincrement())
+  text         String
+  authorID     Int
+  creationTime DateTime @default(now())
+  isHidden     Boolean  @default(false) // for inappropriate content
+
+  author User @relation(fields: [authorID], references: [id], onDelete: Cascade)
+
+  votes     Voted[]
+  upvotes   Upvoted[]
+  downvotes Downvoted[]
+  reports   Reported[]
+
+  comments Comment?
+  post     Post?
+  reply    Reply?
+}
+
+// Represents a vote on a piece of content.
+// We'll just have to check that up/downvotes are unique
+// i.e. if user votes, we first delete from VOTED(which will cascade), then insert again
+model Voted {
+  id        Int @id @default(autoincrement())
+  userID    Int
+  contentID Int
+
+  voter   User    @relation(fields: [userID], references: [id], onDelete: Cascade)
+  content Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+
+  upvote   Upvoted?
+  downvote Downvoted?
+
+  @@unique([userID, contentID])
+}
+
+model Upvoted {
+  id        Int @id @default(autoincrement())
+  userID    Int
+  contentID Int
+
+  vote    Voted   @relation(fields: [userID, contentID], references: [userID, contentID], onDelete: Cascade)
+  content Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userID], references: [id], onDelete: Cascade)
+
+  @@unique([userID, contentID])
+}
+
+model Downvoted {
+  id        Int @id @default(autoincrement())
+  userID    Int
+  contentID Int
+
+  vote    Voted   @relation(fields: [userID, contentID], references: [userID, contentID], onDelete: Cascade)
+  content Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userID], references: [id], onDelete: Cascade)
+
+  @@unique([userID, contentID])
+}
+
+// Represents a report on a piece of content
+model Reported {
+  id        Int    @id @default(autoincrement())
+  userID    Int
+  contentID Int
+  reason    String
+
+  reporter User    @relation(fields: [userID], references: [id], onDelete: Cascade)
+  content  Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+
+  @@unique([userID, contentID])
+}
+
+// CODE TEMPLATES ###############################################################
+model CodeTemplate {
+  id          Int    @id @default(autoincrement())
+  code        String
+  title       String
+  explanation String
+  language    String
+  authorID    Int
+  forkID      Int?
+
+  author          User              @relation(fields: [authorID], references: [id], onDelete: Cascade)
+  forkedFrom      CodeTemplate?     @relation("ForkRelation", fields: [forkID], references: [id])
+  // this field is required to make Prisma happy but can be ignored
+  forkedTemplates CodeTemplate[]    @relation("ForkRelation")
+  tags            CodeTemplateTag[]
+}
+
+// POSTING AND COMMENTING #######################################################
+// Represents that a piece of content is a post, with a title
+model Post {
+  id        Int    @id @default(autoincrement())
+  contentID Int    @unique
+  title     String
+
+  content Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+
+  tags     PostTag[]
+  comments Comment[]
+}
+
+// Represents that a piece of content is a comment, and references a post
+model Comment {
+  id        Int @id @default(autoincrement())
+  contentID Int @unique // the id of the content
+  postID    Int // post to reference
+
+  parentPost Post    @relation(fields: [postID], references: [id], onDelete: Cascade)
+  content    Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+
+  replies Reply[]
+}
+
+// Represents that a piece of content is a reply to a comment
+model Reply {
+  id        Int @id @default(autoincrement())
+  contentID Int @unique // the id of the content
+  commentID Int // comment to reference
+
+  parentComment Comment @relation(fields: [commentID], references: [id], onDelete: Cascade)
+  content       Content @relation(fields: [contentID], references: [id], onDelete: Cascade)
+}
+
+// TAGGING #######################################################################
+// Represents a tag that can be tagges to a code template or post
+model Tag {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  codeTemplateTags CodeTemplateTag[]
+  postTags         PostTag[]
+}
+
+// Join table for tagging code templates
+model CodeTemplateTag {
+  id         Int @id @default(autoincrement())
+  templateID Int
+  tagID      Int
+
+  // Relations
+  template CodeTemplate @relation(fields: [templateID], references: [id], onDelete: Cascade)
+  tag      Tag          @relation(fields: [tagID], references: [id], onDelete: Cascade)
+
+  @@unique([templateID, tagID])
+}
+
+// Join table for tagging posts
+model PostTag {
+  id     Int @id @default(autoincrement())
+  postID Int
+  tagID  Int
+
+  // Relations
+  post Post @relation(fields: [postID], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagID], references: [id], onDelete: Cascade)
+
+  @@unique([postID, tagID])
+}

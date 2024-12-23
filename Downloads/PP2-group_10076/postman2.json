@@ -1,0 +1,769 @@
+{
+  "info": {
+    "_postman_id": "4e782948-d895-43e8-86cb-09113a76e4f1",
+    "name": "CSC309 API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "30175310",
+    "_collection_link": "https://dark-comet-481593.postman.co/workspace/CSC309~a7e79cd6-1a4b-4a60-b711-057f97a68225/collection/30175310-4e782948-d895-43e8-86cb-09113a76e4f1?action=share&source=collection_link&creator=30175310"
+  },
+  "item": [
+    {
+      "name": "Accounts/Authorization",
+      "item": [
+        {
+          "name": "Signup Basic User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"user1\",\r\n\"password\": \"abc\",\r\n\"firstName\": \"Kevin\",\r\n\"lastName\": \"Wang\",\r\n\"email\": \"kevin@gmail.com\",\r\n\"phone\": \"1234567890\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/auth/signup",
+            "description": "Create an account as a basic user. Remember that the username/email must be unique, phone number optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid User Signup",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"user2\",\r\n\"password\": \"abc\",\r\n\"firstName\": \"Kevin\",\r\n\"lastName\": \"Wang\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/auth/signup",
+            "description": "Invalid user signup due to missing email"
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\": \"user1\",\r\n    \"password\": \"abc\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/auth/login",
+            "description": "Login with a username and password, receiving an accessToken and a refreshToken"
+          },
+          "response": []
+        },
+        {
+          "name": "AddPhoto",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoyLCJpYXQiOjE3MjkzNzU3OTMsImV4cCI6MTcyOTM3OTM5M30.xOlS5oeVi3v_9i6DTIb7IGf7cFOsz3tq0JlVpvH7t4E"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "D:\\School\\CSC309\\PP1\\testing_resources\\sample_pfp.jpg"
+                }
+              ]
+            },
+            "url": "localhost:3000/api/auth/addphoto",
+            "description": "Sets profile photo. You should see it added to public/profile_photos.\n\nMake sure to upload a photo, and add a bearer token in the parent folder and use inherit auth from parent!"
+          },
+          "response": []
+        },
+        {
+          "name": "Privilege Escalation",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"password\": \"admin\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/auth/makeadmin"
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaXNBZG1pbiI6dHJ1ZSwiaWQiOjIsImlhdCI6MTcyOTM3NjUyNywiZXhwIjoxNzI5NDYyOTI3fQ.UEeEr_0srmnl0A0CGptPuewpac2JYcvApBtRcchXtYI\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/auth/refresh"
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoyLCJpYXQiOjE3Mjk2MTcyNjEsImV4cCI6MTcyOTYyMDg2MX0.f_Myu8YBTzS2fNw1hjKToYHhRKCqZCkeTpKBVZCst98"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Fork Template",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MzAyMTY1NTUsImV4cCI6MTczMDIyMDE1NX0.Y47stfMOg-B4KET2SGvCOosa87YD6coPDnnPfsoQreo"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// forking a template\n{\n    \"title\": \"Forked version\",\n    \"forkID\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/template/save"
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Template",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3Mjk2MTc3ODAsImV4cCI6MTcyOTYyMTM4MH0.3G60x0qqe60EOjpS-_5iaADruBYoNf-Iwlg8vgPfTgc"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "// creating a new template\n{\n  \"code\": \"function example() { return 'Hello World'; }\",\n  \"title\": \"Example Template\",\n  \"explanation\": \"This template prints 'Hello World'.\",\n  \"language\": \"Javascript\",\n  \"tags\": [\"example\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/template/save"
+          },
+          "response": []
+        },
+        {
+          "name": "Create New Template Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def sum(a, b): return a + b \",\n  \"title\": \"Example Template\",\n  \"explanation\": \"This template returns the sum of two inputs.\",\n  \"language\": \"python\",\n  \"tags\": [\"example\", \"sum\", \"python\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/template/save"
+          },
+          "response": []
+        },
+        {
+          "name": "Modify Template",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3Mjk1NTU4NDcsImV4cCI6MTcyOTU1OTQ0N30.pB67m6_xWECO5eeuzpymW-jkNAqAAsJQS5xbx0j6rB4"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"function example() { return 'Hello World'; }\",\n  \"title\": \"Updated Example\",\n  \"explanation\": \"This template prints 'Hello World'.\",\n  \"tags\": [\"example\", \"javascript\"]\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/template/save/2"
+          },
+          "response": []
+        },
+        {
+          "name": "Search For Specific Template",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyMTcyMTQsImV4cCI6MTcyOTIyMDgxNH0.Io4fRkHeJ8hFEfP3ijhq6ewLSy008AT9FIWpfQ2Khdw"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/template/search/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Search for Templates",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyMTcyMTQsImV4cCI6MTcyOTIyMDgxNH0.Io4fRkHeJ8hFEfP3ijhq6ewLSy008AT9FIWpfQ2Khdw"
+              }
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/template/search?titleContains=Example&explanationContains=template&tags=javascript,example&userID=1&pageNumber=1&pageSize=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "template", "search"],
+              "query": [
+                {
+                  "key": "titleContains",
+                  "value": "Example"
+                },
+                {
+                  "key": "explanationContains",
+                  "value": "template"
+                },
+                {
+                  "key": "tags",
+                  "value": "javascript,example"
+                },
+                {
+                  "key": "userID",
+                  "value": "1"
+                },
+                {
+                  "key": "pageNumber",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3Mjk2MjA1NDEsImV4cCI6MTcyOTYyNDE0MX0.Rvc1UjggAvvrlPjecAse_oBEa9WK1Ms6KFoOsHlAULg"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Code Execution",
+      "item": [
+        {
+          "name": "Execute Code C",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyODY2NzksImV4cCI6MTcyOTI5MDI3OX0.AL0IC8OQkRJmKXwUtxrkWmhSyz-VQ5Sc_j_s2a96vLE"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"#include <stdio.h>\\nint main() { printf(\\\"Hello, World!\\\\n\\\"); return 0; }\",\n  \"language\": \"c\",\n  \"stdin\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/code/execute"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute Code C++",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyODY2NzksImV4cCI6MTcyOTI5MDI3OX0.AL0IC8OQkRJmKXwUtxrkWmhSyz-VQ5Sc_j_s2a96vLE"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"#include <iostream>\\nint main() { std::cout << \\\"Hello, World!\\\" << std::endl; return 0; }\",\n  \"language\": \"cpp\",\n  \"stdin\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/code/execute"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute Code Python",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyODY2NzksImV4cCI6MTcyOTI5MDI3OX0.AL0IC8OQkRJmKXwUtxrkWmhSyz-VQ5Sc_j_s2a96vLE"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"print(\\\"Hello World\\\")\",\n  \"language\": \"python\",\n  \"stdin\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/code/execute"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute Code Java",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MzAwODY0MzUsImV4cCI6MTczMDA5MDAzNX0.kXnmYMq-PBe0uJLPzBD2XMxW_mcFTAmBlAKw-Wee4q4"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"public class temp { public static void main(String[] args) { System.out.println(\\\"Hello World\\\"); } }\",\n  \"language\": \"java\",\n  \"stdin\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/code/execute"
+          },
+          "response": []
+        },
+        {
+          "name": "Execute Code Javascript",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyODY2NzksImV4cCI6MTcyOTI5MDI3OX0.AL0IC8OQkRJmKXwUtxrkWmhSyz-VQ5Sc_j_s2a96vLE"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"console.log(\\\"Hello World\\\")\",\n  \"language\": \"javascript\",\n  \"stdin\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "http://localhost:3000/api/code/execute"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Save New Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"User 2 post 1\",\n    \"description\": \"post 1. I really like these code templates: @1, @4\",\n    \"tags\": [\"tag1\", \"tag3\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/save"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Comment",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIyIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoyLCJpYXQiOjE3MjkzNzcxOTQsImV4cCI6MTcyOTM4MDc5NH0.GEzySOAfVFRFBNQTvbTA5Yh8FAbmSk02NjzrPr-j93k"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": \"This reply is awesome!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/comment/create/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Hide Post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"hide\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/hide/7"
+          },
+          "response": []
+        },
+        {
+          "name": "Report Post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MzAxNDQ4MjUsImV4cCI6MTczMDE0ODQyNX0.4rmd2CPTL0wdCdzkWPF-neExKSLXzxYJUEie3adyg8w"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"reason\": \"This post has explicit content.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/report/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Existing Post w/o New Tags",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyNzM1NDAsImV4cCI6MTcyOTI3NzE0MH0.XWWkuX5WZdNI5f5aN-eWWrphm4Sz0t6_Xc0pmiE4ELg"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"EDITED TITLE\",\n    \"description\": \"EDITED TEXT\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/save/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Existing Post w/ new Tags",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIxIiwiaXNBZG1pbiI6ZmFsc2UsImlkIjoxLCJpYXQiOjE3MjkyNzM1NDAsImV4cCI6MTcyOTI3NzE0MH0.XWWkuX5WZdNI5f5aN-eWWrphm4Sz0t6_Xc0pmiE4ELg"
+              }
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"How to create a C program\",\n    \"description\": \"Just do it !\",\n    \"tags\": [\"C\", \"App\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/save/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Specific Post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "localhost:3000/api/post/search/1"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXI0IiwiaXNBZG1pbiI6dHJ1ZSwiaWQiOjMsImlhdCI6MTczMDE0MzMzMiwiZXhwIjoxNzMwMTQ2OTMyfQ.ZgmYe-QfFPx8t0FDgEIFQV5q56J4BxZB0wE9PmtA9os"
+              }
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"\",\n    \"content\": \"\",\n    \"tags\": [],\n    \"templates\": [],\n    \"fromUser\": false,\n    \"showHidden\": true,\n    \"pageNumber\": 1,\n    \"pageSize\": 5,\n    \"sortMode\": \"mostUpvoted\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/search"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Vote",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"state\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "localhost:3000/api/post/vote/1"
+          },
+          "response": [
+            {
+              "name": "Add Positive Vote",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"state\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "localhost:3000/api/post/vote/1"
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Add Negative Vote",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"state\": -1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "localhost:3000/api/post/vote/1"
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            },
+            {
+              "name": "Add Null Vote",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"state\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": "localhost:3000/api/post/vote/1"
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": null
+            }
+          ]
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwiaXNBZG1pbiI6dHJ1ZSwiaWQiOjIsImlhdCI6MTczMDE1NDQ4OSwiZXhwIjoxNzMwMTU4MDg5fQ.n7Vhm2flF95-pvgaOIs0YTa78-5ZvJVD-iTHesp6SJg"
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "exec": [""]
+          }
+        }
+      ]
+    }
+  ]
+}
