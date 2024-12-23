@@ -1,3 +1,17 @@
+# Scriptorium
+Scriptorium is an innovative online platform designed for geeks, nerds, and coding enthusiasts to write, execute, and share code in multiple programming languages. Inspired by the concept of ancient scriptoria, where manuscripts were crafted and preserved, Scriptorium modernizes this idea for the digital age, providing a secure and interactive environment for experimenting, refining, and reusing code snippets. Whether you’re testing a quick snippet or building reusable code templates, Scriptorium is your ideal tool for bringing your ideas to life.
+
+NOTE: This project was created for the course CSC309 at the University of Toronto. It aims to build a fully-functional web application using Next.js, Prisma, React, TailwindCSS, and Docker.
+
+# Features
+- Code Writing & Execution: Write and execute code in languages like C, C++, Java, Python, and JavaScript.
+- Code Templates: Save, organize, and share reusable code templates.
+- Blog Integration: Create, edit, and read blog posts with embedded code examples.
+- User Authentication: Sign up, log in, and manage profiles.
+- Responsive Design: Fully responsive user interface for various devices.
+- Dark/Light Themes: Toggle between light and dark themes for comfortable coding.
+
+
 # ACCOUNTS
 
 - username: kevin, password: kevin --> user account
