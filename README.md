@@ -5,47 +5,6 @@
 
 Go to posts, and look for the "for the TA" tag there.
 
-# CONTRIBUTIONS
-
-## Kevin: contributed under dungwoong, wangke61, linux
-
-- nav bar
-- auth system and auto-refresh
-- Global context provider, with wrapper functions for calling the API
-- auto-redirect to /login for certain pages eg. /profile, /editprofile
-- light/dark theme
-- /login, /signup, /profile, /editprofile
-- "/" page for non-authenticated users
-- /newpost
-- /posts
-- startup.sh and docker setup
-- create the sample DB
-- added <ParagraphWithTemplateLinks> for /posts/[id]
-
-Bugfixes/QA:
-
-- new comments/get api endpoint wasn't returning all info, I fixed that
-- templates was doing filter by user in the frontend, resulting in pages with <9 items. I changed it to filter in the backend
-- posts weren't showing newlines. I added whitespace-prewrap
-- UI: new template click title to edit
-- backend issue: template save would overwrite explanation with language
-- point out bugs in /posts/[id]: upvote/downvote not showing, upvotes show undefined if you upvote the post.
-- posts, don't show upvote/downvote etc. buttons for non-logged in users, or hidden posts
-
-# Emily: Contributed under 3m1ly03
-
-- /newtemplate
-- /templates
-- /templates/[id]
-- adding code syntax highlighting
-- CodeEditor component
-
-# Benson: Contributed under Benson-chou
-
-- /posts/[id]
-- /posts: pagination disallow next page click, hidden posts show as red, and display to authors/admin only
-- CommentSortForm component
-
 ## Getting Started
 
 First, run the development server:
